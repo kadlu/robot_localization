@@ -24,7 +24,22 @@ import launch.actions
 from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
+    # Declare the static transform parameters
+    x = LaunchConfiguration('x')
+    y = LaunchConfiguration('y')
+    z = LaunchConfiguration('z')
+    roll = LaunchConfiguration('roll')
+    pitch = LaunchConfiguration('pitch')
+    yaw = LaunchConfiguration('yaw')
+    
     return LaunchDescription([
+        # Static transform publisher node
+        launch_ros.actions.Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=[x, y, z, roll, pitch, yaw, 'base_link', 'imu_link'],
+            output='screen'
+        ),
         launch_ros.actions.Node(
             package='robot_localization',
             executable='ukf_node',
